@@ -1,0 +1,24 @@
+﻿@using Univer.Models;
+@model List<Student>
+
+
+<h2>List of student</h2>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Faculty</th>
+        <th>Year</th>
+        <th>Stipend</th>
+    </tr>
+        @foreach(var item in Model)
+        {
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+        <td>@Html.DisplayFor(modelItem => item.Faculty)</td>
+        <td>@Html.DisplayFor(modelItem => item.Year)</td>
+        <td>@Html.DisplayFor(modelItem => item.Stipend)</td>
+    </tr>
+        }
+</table>
+

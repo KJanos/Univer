@@ -7,7 +7,7 @@ using Univer.Models;
 
 namespace Univer.Services
 {
-    interface IStudentService
+    public interface IStudentService
     {
         Task<List<Student>> GetStudents();
 

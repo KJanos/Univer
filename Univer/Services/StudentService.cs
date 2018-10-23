@@ -10,6 +10,13 @@ namespace Univer.Services
 {
     public class StudentService : IStudentService
     {
+        private readonly StudentService _studentService;
+
+        public StudentService()
+        {
+            _studentService = new StudentService();
+        }
+
         public async Task AddStudent(Student student)
         {
             using (var context = new UniversityContext())
