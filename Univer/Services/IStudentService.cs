@@ -9,7 +9,7 @@ namespace Univer.Services
 {
     public interface IStudentService
     {
-        Task<List<Student>> GetStudents();
+        Task<IEnumerable<Student>> GetStudents();
 
         Task<Student> GetStudentById(int id);
 

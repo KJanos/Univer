@@ -10,11 +10,8 @@ namespace Univer.Services
 {
     public class StudentService : IStudentService
     {
-        private readonly StudentService _studentService;
-
         public StudentService()
         {
-            _studentService = new StudentService();
         }
 
         public async Task AddStudent(Student student)
@@ -47,9 +44,9 @@ namespace Univer.Services
             return result;
         }
 
-        public async Task<List<Student>> GetStudents()
+        public async Task<IEnumerable<Student>> GetStudents()
         {
-            List<Student> listOfStudents = new List<Student>();
+            var listOfStudents = new List<Student>();
             using (var context = new UniversityContext())
             {
                 listOfStudents = await context.Students.ToListAsync();

@@ -1,7 +1,4 @@
-﻿@using Univer.Models;
-@model List<Student>
-
-
+﻿
 <h2>List of student</h2>
 
 <table>
@@ -11,13 +8,13 @@
         <th>Year</th>
         <th>Stipend</th>
     </tr>
-        @foreach(var item in Model)
+        @foreach (var item in ViewBag.Students)
         {
     <tr>
-        <td>@Html.DisplayFor(modelItem => item.Name)</td>
-        <td>@Html.DisplayFor(modelItem => item.Faculty)</td>
-        <td>@Html.DisplayFor(modelItem => item.Year)</td>
-        <td>@Html.DisplayFor(modelItem => item.Stipend)</td>
+        <td>@item.Name</td>
+        <td>@item.Faculty</td>
+        <td>@item.Year</td>
+        <td>@item.Stipend</td>
     </tr>
         }
 </table>
