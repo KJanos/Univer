@@ -17,5 +17,7 @@ namespace Univer.Models
         public int Year { get; set; }
 
         public bool Stipend { get; set; }
+
+        public IEnumerable<SelectListItem> Faculties { get; set; }
     }
 }

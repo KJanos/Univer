@@ -39,7 +39,13 @@ namespace Univer.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
-            return View();
+            var faculties = GetAllFaculties();
+
+            var student = new Student();
+
+            student.Faculties = GetSelectListItems(faculties);
+
+            return View(student);
         }
 
         // POST: Students/Create
@@ -49,6 +55,10 @@ namespace Univer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "StudentId,Name,Faculty,Year,Stipend")] Student student)
         {
+            var faculties = GetAllFaculties();
+
+            student.Faculties = GetSelectListItems(faculties);
+
             if (ModelState.IsValid)
             {
                 db.Students.Add(student);
@@ -62,11 +72,17 @@ namespace Univer.Controllers
         // GET: Students/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+
+            var faculties = GetAllFaculties();
+            Student student = await db.Students.FindAsync(id);
+
+            student.Faculties = GetSelectListItems(faculties);
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = await db.Students.FindAsync(id);
+            
             if (student == null)
             {
                 return HttpNotFound();
@@ -81,6 +97,10 @@ namespace Univer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "StudentId,Name,Faculty,Year,Stipend")] Student student)
         {
+            var faculties = GetAllFaculties();
+
+            student.Faculties = GetSelectListItems(faculties);
+
             if (ModelState.IsValid)
             {
                 db.Entry(student).State = EntityState.Modified;
@@ -123,6 +143,35 @@ namespace Univer.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private IEnumerable<string> GetAllFaculties()
+        {
+            return new List<string>
+            {
+                "Law",
+                "Programming",
+                "Medicine",
+                "Economics",
+                "Education",
+                "History",
+            };
+        } 
+
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
+        {
+            var selectList = new List<SelectListItem>();
+
+            foreach (var element in elements)
+            {
+                selectList.Add( new SelectListItem
+                {
+                    Value = element,
+                    Text = element,
+                });
+            }
+
+            return selectList;
         }
     }
 }
