@@ -13,5 +13,9 @@ namespace Univer.Models
         public string Name { get; set; }
 
         public string Subject { get; set; }
+
+        public int Salary { get; set; }
+
+        public IEnumerable<SelectListItem> Subjects { get; set; }
     }
 }

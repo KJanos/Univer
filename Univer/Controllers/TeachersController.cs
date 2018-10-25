@@ -11,123 +11,120 @@ using Univer.Models;
 
 namespace Univer.Controllers
 {
-    public class StudentsController : Controller
+    public class TeachersController : Controller
     {
         private UniversityContext db = new UniversityContext();
 
-        // GET: Students
+        // GET: Teachers
         public async Task<ActionResult> Index()
         {
-            return View(await db.Students.ToListAsync());
+            return View(await db.Teachers.ToListAsync());
         }
 
-        // GET: Students/Details/5
+        // GET: Teachers/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = await db.Students.FindAsync(id);
-            if (student == null)
+            Teacher teacher = await db.Teachers.FindAsync(id);
+            if (teacher == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(teacher);
         }
 
-        // GET: Students/Create
+        // GET: Teachers/Create
         public ActionResult Create()
         {
-            var faculties = GetAllFaculties();
-            var student = new Student();
+            var subjects = GetAllSubjects();
+            var teacher = new Teacher();
+            teacher.Subjects = GetSelectListItems(subjects);
 
-            student.Faculties = GetSelectListItems(faculties);
-
-            return View(student);
+            return View(teacher);
         }
 
-        // POST: Students/Create
+        // POST: Teachers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "StudentId,Name,Faculty,Year,Stipend")] Student student)
+        public async Task<ActionResult> Create([Bind(Include = "TeacherId,Name,Subject,Salary")] Teacher teacher)
         {
-            var faculties = GetAllFaculties();
-            student.Faculties = GetSelectListItems(faculties);
+            var subjects = GetAllSubjects();
+            teacher.Subjects = GetSelectListItems(subjects);
 
             if (ModelState.IsValid)
             {
-                db.Students.Add(student);
+                db.Teachers.Add(teacher);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(student);
+            return View(teacher);
         }
 
-        // GET: Students/Edit/5
+        // GET: Teachers/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-
-            var faculties = GetAllFaculties();
-            Student student = await db.Students.FindAsync(id);
-            student.Faculties = GetSelectListItems(faculties);
+            Teacher teacher = await db.Teachers.FindAsync(id);
+            var subjects = GetAllSubjects();
+            teacher.Subjects = GetSelectListItems(subjects);
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
-            if (student == null)
+            if (teacher == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(teacher);
         }
 
-        // POST: Students/Edit/5
+        // POST: Teachers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "StudentId,Name,Faculty,Year,Stipend")] Student student)
+        public async Task<ActionResult> Edit([Bind(Include = "TeacherId,Name,Subject,Salary")] Teacher teacher)
         {
-            var faculties = GetAllFaculties();
-            student.Faculties = GetSelectListItems(faculties);
+            var subjects = GetAllSubjects();
+            teacher.Subjects = GetSelectListItems(subjects);
 
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
+                db.Entry(teacher).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(student);
+            return View(teacher);
         }
 
-        // GET: Students/Delete/5
+        // GET: Teachers/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = await db.Students.FindAsync(id);
-            if (student == null)
+            Teacher teacher = await db.Teachers.FindAsync(id);
+            if (teacher == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return View(teacher);
         }
 
-        // POST: Students/Delete/5
+        // POST: Teachers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Student student = await db.Students.FindAsync(id);
-            db.Students.Remove(student);
+            Teacher teacher = await db.Teachers.FindAsync(id);
+            db.Teachers.Remove(teacher);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -141,29 +138,28 @@ namespace Univer.Controllers
             base.Dispose(disposing);
         }
 
-        private IEnumerable<string> GetAllFaculties()
+        public IEnumerable<string> GetAllSubjects()
         {
             return new List<string>
             {
-                "Law",
-                "Programming",
-                "Medicine",
-                "Economics",
-                "Education",
-                "History",
+                "OOP",
+                "Database",
+                "Elementary economic",
+                "English",
+                "Ukrainian"
             };
-        } 
+        }
 
-        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
+        public IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
         {
-            var selectList = new List<SelectListItem>();
+            var selectList = new List<SelectListItem>(); 
 
             foreach (var element in elements)
             {
-                selectList.Add( new SelectListItem
+                selectList.Add(new SelectListItem()
                 {
-                    Value = element,
                     Text = element,
+                    Value = element
                 });
             }
 
